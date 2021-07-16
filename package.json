@@ -1,0 +1,27 @@
+{
+  "name": "frostlake",
+  "version": "1.0.0",
+  "description": "frostlake app",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app",
+    "api": "nodemon app",
+    "view": "npm start --prefix view",
+    "dev": "concurrently \"npm run api\" \"npm run view\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "See in License",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^6.2.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.12.0",
+    "googleapis": "^81.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.2",
+    "nodemailer": "^6.6.3",
+    "nodemon": "^2.0.12"
+  }
+}
