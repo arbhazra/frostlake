@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs')
 const otptool = require('otp-without-db')
 const otpgen = require('otp-generator')
 const { check, validationResult } = require('express-validator')
-const User = require('../model/User')
+const User = require('../models/User')
 const sendmail = require('../mail/SendMail')
 
 //Reading Environment Variables
