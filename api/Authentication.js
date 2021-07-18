@@ -1,17 +1,17 @@
 //Import Statements
-const express = require('express')
+const router = require('express').Router()
 const dotenv = require('dotenv').config()
-const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const otptool = require('otp-without-db')
+const otpgen = require('otp-generator')
 const { check, validationResult } = require('express-validator')
 const User = require('../model/User')
-const createOtp = require('../function/CreateOTP')
-const createHash = require('../function/CreateHash')
-const sendMail = require('../../SNOWLAKE/functions/SendMail')
+const sendmail = require('../mail/SendMail')
 
 //Reading Environment Variables
 const JWT_SECRET = process.env.JWT_SECRET
+const OTP_KEY = process.env.OTP_KEY
 
 //Sign Up Route - Get OTP
 router.post
@@ -47,9 +47,9 @@ router.post
 
                 else
                 {
-                    const otp = createOtp()  
-                    const hash = await createHash(otp.concat(email))
-                    sendMail(email,otp)
+                    const otp = otpgen.generate(6, { alphabets: false, specialChars: false, upperCase: false }) 
+                    const hash = otptool.createNewOTP(email, otp, key=OTP_KEY, expiresAfter=3, algorithm="sha256")
+                    sendmail(email,otp)
                     return res.status(200).json({ hash, msg: 'Please check OTP in Email' })
                 }
             } 
@@ -88,7 +88,7 @@ router.post
         else
         {
             let { name, email, password, otp, hash, region } = req.body
-            password = await createHash(password)
+            password = await bcrypt.hash(password, 12)
 
             try 
             {
@@ -101,9 +101,9 @@ router.post
 
                 else
                 {
-                    const isCorrect = await bcrypt.compare(otp.concat(email), hash)
+                    const isOTPValid = otptool.verifyOTP(email, otp, hash, key=OTP_KEY, algorithm='sha256')
 
-                    if(isCorrect)
+                    if(isOTPValid)
                     {
                         user = new User({ name, email, password, region })
                         await user.save()

@@ -15,7 +15,7 @@ const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_U
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN })
 
 //Sendmail function
-async function sendMail(email, otp)
+async function sendmail(email, otp)
 {
     try 
     {
@@ -47,4 +47,4 @@ async function sendMail(email, otp)
 }
 
 //Export Statement
-module.exports = sendMail
+module.exports = sendmail
