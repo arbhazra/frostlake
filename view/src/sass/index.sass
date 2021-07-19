@@ -1,0 +1,228 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap")
+
+$navColor: #191919
+$primaryGradient: linear-gradient(315deg, #2a2a72 0%, #009ffd 74%)
+$primaryColor: #009ffd
+$white : #fdfdfb
+$inputColor: #f7f7f7
+
+html 
+    scrollbar-width: none
+
+::-webkit-scrollbar 
+    width: 0px
+
+body 
+    background: linear-gradient(to right, rgba(26, 25, 31, 0.4), rgba(26, 25, 31, 0.4)), url(../static/landing.jpg)
+    -webkit-background-size: cover
+    -moz-background-size: cover
+    -o-background-size: cover
+    background-size: cover
+    background-attachment: fixed
+    color: $white
+    font-family: "Quicksand", sans-serif
+    -webkit-font-smoothing: antialiased
+    -moz-osx-font-smoothing: grayscale
+
+.cover 
+    width: 100vw
+    height: 90vh
+    vertical-align: middle
+    display: table-cell
+    animation: transitionIn 0.3s
+
+    &text
+        padding-left: 1.5rem
+
+    &loader
+        text-align: center
+
+.card
+    margin-bottom: 2rem
+    font-weight: bold
+    border: none
+    border-radius: 0px
+ 
+    &-header   
+        background: $primaryGradient
+
+.jumbotron 
+    margin-top: 2rem
+    background: $white
+    color: $primaryColor
+    border-radius: 4px
+    font-weight: bold
+
+    &name   
+        font-size: 180%
+    
+    &date  
+        font-size: 120%
+    
+    &content  
+        font-size: 100%
+
+.lead
+    font-size: 120%
+
+.logo 
+    font-size: 180%
+    font-weight: bold
+    letter-spacing: 0.2rem
+
+    &box  
+        text-align: center
+        margin-bottom: 2rem
+        letter-spacing: 0.1rem
+
+.box
+    top: 54%
+    left: 50%
+    position: absolute
+    transform: translate(-50%,-50%)
+    padding-left: 20px
+    box-sizing: border-box
+    padding: 27px
+    background: $white
+    width: 315px
+    color: $primaryColor
+    font-weight: bold
+    border-radius: 3px
+
+.jumbotron
+    padding: 2rem
+
+.btn
+    border: none
+    background: $primaryGradient
+    font-weight: bold
+    border-radius: 50px
+    padding-top: 0.7rem
+    padding-bottom: 0.7rem
+    padding-right: 1.5rem
+    padding-left: 1.5rem
+    animation: transitionIn 0.3s
+    margin-right: 1rem
+    margin-bottom: 1rem
+    color: $white
+
+    &:hover
+        color: $white
+
+a,
+a:hover,
+a:focus,
+a:active
+    color: $white
+    text-decoration: none
+
+    &.boxlink
+        color: $primaryColor
+        text-decoration: none
+    
+.custom-select
+    border-radius: 30px
+    background-color: $inputColor
+    border: none
+    margin-bottom: 15px
+
+input[type = "text"],
+input[type = "password"],
+input[type = "url"],
+input[type = "email"]
+    outline: 0
+    width: 100%
+    height: 50px
+    border: none
+    border-radius: 25px
+    background-color: $inputColor
+    color: $primaryColor
+    margin: 5px 0 15px
+    padding: 0px
+    box-sizing: border-box
+    font-size: 14px
+    text-align: center
+    animation: transitionIn 0.3s
+    font-weight: bolder
+
+.form-select
+    background-color: $inputColor
+    height: 50px
+    border-radius: 25px
+
+textarea 
+    width: 100%
+    height: 120px
+    padding: 12px 20px
+    box-sizing: border-box
+    color: $primaryColor
+    outline: none
+    border: none
+    resize: none
+    border-radius: 20px
+    font-weight: bolder
+    background-color: $inputColor
+
+input:focus,
+textarea:focus
+    border: 1px dashed $primaryColor
+
+#alert 
+    color: $primaryColor
+    text-align: center
+    font-weight: bold
+    font-size: 1rem
+    animation: transitionIn 0.3s
+
+.fa-chevron-right
+    font-size: 0.9em
+    padding-left: 0.7rem
+
+.fa-chevron-left,
+.fa-external-link-square-alt
+    font-size: 0.9em
+    padding-right: 0.8rem
+
+.fa-cog
+    color: $primaryColor
+
+.fa-stream
+    color: $primaryColor
+
+.navbar 
+    background-color: $navColor
+    z-index: 2
+    font-weight: bold
+    padding: 1.35rem
+    
+.navbar-brand
+    font-size: 90%
+
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus 
+    outline: none
+    box-shadow: none
+
+@keyframes transitionIn 
+    from 
+        opacity: 0
+        transform: rotateX(-10deg)
+    
+    to 
+        opacity: 1
+        transform: rotateX(0)
+
+@media only screen and (max-width: 999px) 
+    .lead
+        font-size: 90%
+
+.col-lg-4,
+.col-lg-12
+    margin-top: 2rem
+
+.container 
+    min-width: 90%
+
+.progress
+    border-radius: 50px

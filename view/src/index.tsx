@@ -1,10 +1,8 @@
-import React from 'react'
+//Import Statements
 import ReactDOM from 'react-dom'
-import App from './App'
+import Routes from './routes'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './sass/index.sass'
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-)
+//React Render
+ReactDOM.render(<Routes />, document.getElementById('root'))
