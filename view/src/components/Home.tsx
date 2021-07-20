@@ -20,7 +20,7 @@ const Home: React.FC = () =>
                 <Navigation />
                 <Container>
                     <div className="cover covertext">
-                        <p className="display-1">Snowlake</p>
+                        <p className="display-2">Frostlake</p>
                         <p className="lead my-4 fw-bold">Build amazing things <br/> We provide the tools, you change the world <br /> Create amazing prototypes with powerful capabilities</p>
                         <Link to ='/auth/signup' className="btn">Sign Up<i className="fas fa-chevron-right"></i></Link>
                     </div>
