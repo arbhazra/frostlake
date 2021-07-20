@@ -13,7 +13,7 @@ app.use(express.json({ extended: false }))
 MongoConnection()
 
 //Defining API Routes
-appp.use('/api/account', require('./api/Account'))
+app.use('/api/account', require('./api/Account'))
 app.use('/api/auth', require('./api/Authentication'))
 app.use('/api/project', require('./api/Project'))
 

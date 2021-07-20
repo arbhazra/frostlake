@@ -42,4 +42,4 @@ const ProjectSchema = new mongoose.Schema
 })
 
 //EXPORT STATEMENTS
-module.exports = Prototype = mongoose.model('prototype', PrototypeSchema)
+module.exports = Project = mongoose.model('project', ProjectSchema)

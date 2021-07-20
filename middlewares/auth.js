@@ -1,6 +1,6 @@
 //Import Statements
 const jwt = require('jsonwebtoken')
-const User = require('../model/User')
+const User = require('../models/User')
 const dotenv = require('dotenv').config()
 
 //Reading Environment Variables

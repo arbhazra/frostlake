@@ -3,8 +3,8 @@ const express = require('express')
 const { check, validationResult } = require('express-validator')
 const mongoose = require('mongoose')
 const { v4: uuidv4 } = require('uuid')
-const auth = require('../middleware/auth')
-const Project = require('../model/Project')
+const auth = require('../middlewares/auth')
+const Project = require('../models/Project')
 const router = express.Router()
 
 //New Project Route
