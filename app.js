@@ -13,9 +13,9 @@ app.use(express.json({ extended: false }))
 MongoConnection()
 
 //Defining API Routes
-// app.use('/api/account', require('./api/Account'))
+appp.use('/api/account', require('./api/Account'))
 app.use('/api/auth', require('./api/Authentication'))
-// app.use('/api/prototype', require('./api/Prototype'))
+app.use('/api/project', require('./api/Project'))
 
 //Production Build Combination with React
 if(process.env.NODE_ENV === 'production')
