@@ -2,6 +2,7 @@
 import React, { Fragment, useState } from 'react'
 import axios from 'axios'
 import Loading from '../reusables/Loading'
+import Clock from 'react-live-clock'
 import { Redirect, useHistory, Link } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
 import Navigation from '../reusables/Navigation'
@@ -28,8 +29,12 @@ const Dashboard: React.FC = () =>
                     <Navigation />
                     <Container>
                         <div className="cover covertext">
-                            <p className="display-2">Frostlake</p>
-                            <p className="lead my-4 fw-bold">{ `Welcome, ${session.name.split(" ")[0]}` }<br/> { `${session.prototypeCount} % account storage used, ${100-session.prototypeCount} % free`} <br />Control your things from here</p>
+                            <p className="display-4"><Clock format={ 'hh : mm a' } ticking={ true } timezone={ session.region } /></p>
+                            <p className="lead my-4 fw-bold" style={{ marginLeft: '3px' }}>
+                                { `Welcome, ${session.name.split(" ")[0]}` }<br/> 
+                                { ` Project Storage: ${ session.projectCount * 10 } % Used, ${ (10- session.projectCount) * 10 } % Free` }<br/>
+                                { ` Document Storage: ${ session.documentCount } % Used, ${ (100- session.documentCount) } % Free` }
+                            </p>
                             <Link to ='/doccloud/project/create' className="btn">Create Project<i className="fas fa-chevron-right"></i></Link>
                             <Link to ='/doccloud/project/inventory' className="btn">Inventory<i className="fas fa-chevron-right"></i></Link>
                         </div>

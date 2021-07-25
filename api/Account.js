@@ -5,6 +5,7 @@ const { check, validationResult } = require('express-validator')
 const auth = require('../middlewares/auth')
 const User = require('../models/User')
 const Project = require('../models/Project')
+const Document = require('../models/Document')
 const router = express.Router()
 
 //Dashboard Route
@@ -23,7 +24,8 @@ router.get
             if(user)
             {
                 const projectCount = await Project.find({ creator: req.id }).countDocuments()
-                return res.status(200).json({ user, projectCount })
+                const documentCount = await Document.find({ creator: req.id }).countDocuments()
+                return res.status(200).json({ user, projectCount, documentCount })
             }
 
             else
@@ -98,6 +100,7 @@ router.post
             if(isPasswordMatching)
             {
                 await Project.deleteMany({ creator: req.id })
+                await Document.deleteMany({ creator: req.id })
                 await User.findByIdAndDelete(req.id)
                 return res.status(200).json({ msg: 'Account Close Success' })
             }

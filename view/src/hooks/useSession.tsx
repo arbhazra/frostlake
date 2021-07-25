@@ -5,7 +5,7 @@ import axios from 'axios'
 //Session Hook
 const useSession = () =>
 {
-    const [state, setState] = useState({ name: '', prototypeCount: 0, isLoaded: false, hasError: false })
+    const [state, setState] = useState({ name: '', region: 'Asia/Kolkata', projectCount: 0, documentCount:0, isLoaded: false, hasError: false })
 
     useEffect(() => 
     {
@@ -16,13 +16,14 @@ const useSession = () =>
             try 
             {
                 const response = await axios.get('/api/account/dashboard')
-                setState({ name: response.data.user.name, prototypeCount: response.data.prototypeCount, isLoaded: true, hasError: false })
+                console.log(response)
+                setState({ name: response.data.user.name, region: response.data.user.region, projectCount: response.data.projectCount, documentCount: response.data.documentCount, isLoaded: true, hasError: false })
             } 
             
             catch (error) 
             {
                 localStorage.removeItem('token')
-                setState({ name: '', prototypeCount: 0, isLoaded: true, hasError: true })
+                setState({ ...state, isLoaded: true, hasError: true })
             }
         }
 
