@@ -18,6 +18,7 @@ const SignUp: React.FC = () =>
         const fetchRegions = async() =>
         {
             const response = await axios.get('http://worldtimeapi.org/api/timezone')
+            console.log(response)
             setRegions(response.data)
         }
 
@@ -103,7 +104,7 @@ const SignUp: React.FC = () =>
                         {
                             regions.map(region =>
                             {
-                                return <option value={ region }>{region}</option>
+                                return <option value={ region } key={ region }>{region}</option>
                             })
                         }
                     </Form.Select><br/>
