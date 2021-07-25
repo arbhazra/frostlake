@@ -28,9 +28,10 @@ const Dashboard: React.FC = () =>
                     <Navigation />
                     <Container>
                         <div className="cover covertext">
-                            <p className="display-1">Snowlake</p>
+                            <p className="display-2">Frostlake</p>
                             <p className="lead my-4 fw-bold">{ `Welcome, ${session.name.split(" ")[0]}` }<br/> { `${session.prototypeCount} % account storage used, ${100-session.prototypeCount} % free`} <br />Control your things from here</p>
-                            <Link to ='/account/update' className="btn">Update Account<i className="fas fa-chevron-right"></i></Link>
+                            <Link to ='/doccloud/project/create' className="btn">Create Project<i className="fas fa-chevron-right"></i></Link>
+                            <Link to ='/doccloud/project/inventory' className="btn">Inventory<i className="fas fa-chevron-right"></i></Link>
                         </div>
                     </Container>
                 </Fragment> 

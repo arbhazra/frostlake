@@ -33,9 +33,7 @@ function Navigation()
                     <Navbar.Toggle></Navbar.Toggle>
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="ms-auto">   
-                            <Link to="/prototype/new"><Navbar.Brand>New Prototype</Navbar.Brand></Link>
-                            <Link to="/prototype/search"><Navbar.Brand>Search Prototype</Navbar.Brand></Link>
-                            <Link to="/prototype/library"><Navbar.Brand>Library</Navbar.Brand></Link>
+                            <Link to="/account/update"><Navbar.Brand>Account</Navbar.Brand></Link>
                             <Link to="/auth/signout"><Navbar.Brand>Sign Out</Navbar.Brand></Link>             
                         </Nav>
                     </Navbar.Collapse>

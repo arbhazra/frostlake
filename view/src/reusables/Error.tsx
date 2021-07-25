@@ -23,7 +23,7 @@ function Error(props: any)
             <Fragment>
                 <div className="box"> 
                     <p className="logo logobox">{ props.message? props.message: 'Not Found' }</p>
-                    <Link to={ props.btnlink? props.btnlink: '/' } className="btn btn-block"><i className="fas fa-chevron-left"></i>{ props.btn? props.btn: 'Go Back' }</Link>
+                    <button onClick={ () => window.history.back() } className="btn btn-block"><i className="fas fa-chevron-left"></i>{ props.btn? props.btn: 'Go Back' }</button>
                 </div>
             </Fragment>
         )

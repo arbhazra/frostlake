@@ -3,13 +3,13 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { CloseAccount, Dashboard, UpdateAccount } from '../components/Account'
 import { PasswordReset, SignIn, SignOut, SignUp } from '../components/Authentication'
 import Home from '../components/Home'
-import Navigation from '../reusables/Navigation'
+import { CreateProject, ProjectInventory, ViewProject, DeleteProject, CreateDocument, ViewDocument } from '../components/Cloud'
+import Error from '../reusables/Error'
 
 function Routes() 
 {
     return (
         <BrowserRouter>
-            {/* <Navigation /> */}
             <Switch>
                 <Route exact path= '/' component = { Home } />
                 <Route exact path= '/auth/signup' component = { SignUp } />
@@ -18,11 +18,14 @@ function Routes()
                 <Route exact path= '/auth/signout' component = { SignOut } />
                 <Route exact path= '/account/dashboard' component = { Dashboard } />
                 <Route exact path= '/account/update' component = { UpdateAccount } />
-                <Route exact path= '/project/new' component = { CloseAccount } />
-                <Route exact path= '/project/close' component = { CloseAccount } />
                 <Route exact path= '/account/close' component = { CloseAccount } />
-                <Route exact path= '/account/close' component = { CloseAccount } />
-                <Route exact path= '/account/close' component = { CloseAccount } />
+                <Route exact path= '/doccloud/project/create' component = { CreateProject } />
+                <Route exact path= '/doccloud/project/inventory' component = { ProjectInventory } />
+                <Route exact path= '/doccloud/project/inventory/viewone/:id' component = { ViewProject } />
+                <Route exact path= '/doccloud/project/inventory/viewone/:id/deleteproject' component = { DeleteProject } />
+                <Route exact path= '/doccloud/project/inventory/viewone/:id/docs/create' component = { CreateDocument } />
+                <Route exact path= '/doccloud/project/inventory/viewone/:id/docs/:docid' component = { ViewDocument } />
+                <Route component = { Error } />
             </Switch>
         </BrowserRouter>
     )

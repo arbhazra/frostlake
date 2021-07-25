@@ -20,8 +20,8 @@ const Home: React.FC = () =>
                 <Navigation />
                 <Container>
                     <div className="cover covertext">
-                        <p className="display-2">Frostlake</p>
-                        <p className="lead my-4 fw-bold">Build amazing things <br/> We provide the tools, you change the world <br /> Create amazing prototypes with powerful capabilities</p>
+                        <p className="display-4">Innovate anywhere</p>
+                        <p className="lead my-4 fw-bold" style={{ marginLeft: '3px' }}>Build amazing things <br/> Document Cloud for everyone <br/> Share your prototypes on the cloud securely</p>
                         <Link to ='/auth/signup' className="btn">Sign Up<i className="fas fa-chevron-right"></i></Link>
                     </div>
                 </Container>

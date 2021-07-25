@@ -7,7 +7,7 @@ const dotenv = require('dotenv').config()
 //Initialize Express App
 const app = express()
 app.listen(process.env.PORT)
-app.use(express.json({ extended: false }))
+app.use(express.json({ extended: false, limit: '4mb' }))
 
 //MongoDB Connection
 MongoConnection()
@@ -15,7 +15,7 @@ MongoConnection()
 //Defining API Routes
 app.use('/api/account', require('./api/Account'))
 app.use('/api/auth', require('./api/Authentication'))
-app.use('/api/project', require('./api/Project'))
+app.use('/api/doccloud', require('./api/Cloud'))
 
 //Production Build Combination with React
 if(process.env.NODE_ENV === 'production')

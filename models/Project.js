@@ -16,24 +16,6 @@ const ProjectSchema = new mongoose.Schema
         required: true
     },
 
-    description:
-    {
-        type: String,
-        required: true
-    },
-
-    link:
-    {
-        type: String,
-        required: true
-    },
-
-    accesstoken:
-    {
-        type: String,
-        required: true
-    },
-
     date:
     {
         type: String,

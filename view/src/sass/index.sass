@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap")
 
-$navColor: #191919
-$primaryColor: #191919
+$navColor: #1a1a1f
+$primaryColor: #1a1a1f
 $white : #ffffff
 $inputColor: #f7f7f7f3
 
@@ -12,7 +12,7 @@ html
     width: 0px
 
 body 
-    background: linear-gradient(to right, rgba(26, 25, 31, 0.4), rgba(26, 25, 31, 0.4)), url(../static/landing.jpg)
+    background: linear-gradient(to right, rgba(26, 25, 31, 0.7), rgba(26, 25, 31, 0.7)), url(../static/landing.jpg)
     -webkit-background-size: cover
     -moz-background-size: cover
     -o-background-size: cover
@@ -28,7 +28,7 @@ body
     height: 90vh
     vertical-align: middle
     display: table-cell
-    animation: transitionIn 0.3s
+    animation: transitionIn 0.5s
 
     &text
         padding-left: 1.5rem
@@ -37,13 +37,15 @@ body
         text-align: center
 
 .card
-    margin-bottom: 2rem
+    background-color: $primaryColor
+    margin: 1em 0em 1em 0em
     font-weight: bold
     border: none
-    border-radius: 0px
+    border-radius: 100px !important
  
     &-header   
         background: $primaryColor
+        border-radius: 100px !important
 
 .jumbotron 
     margin-top: 2rem
@@ -86,7 +88,7 @@ body
     width: 315px
     color: $primaryColor
     font-weight: bold
-    border-radius: 3px
+    border-radius: 4px
 
 .jumbotron
     padding: 2rem
@@ -100,7 +102,7 @@ body
     padding-bottom: 0.7rem
     padding-right: 1.5rem
     padding-left: 1.5rem
-    animation: transitionIn 0.3s
+    animation: transitionIn 0.5s
     margin-right: 1rem
     margin-bottom: 1rem
     color: $white
@@ -141,7 +143,7 @@ input[type = "email"]
     box-sizing: border-box
     font-size: 14px
     text-align: center
-    animation: transitionIn 0.3s
+    animation: transitionIn 0.5s
     font-weight: bolder
 
 .form-select
@@ -171,7 +173,7 @@ textarea:focus
     text-align: center
     font-weight: bold
     font-size: 1rem
-    animation: transitionIn 0.3s
+    animation: transitionIn 0.5s
 
 .fa-chevron-right
     font-size: 0.9em
@@ -191,10 +193,11 @@ textarea:focus
 .navbar 
     background-color: $navColor
     z-index: 2
-    padding: 1.35rem
+    padding: 1.3rem
+    font-weight: bold
     
 .navbar-brand
-    font-size: 100%
+    font-size: 90%
 
 .navbar-toggler:focus,
 .navbar-toggler:active,
