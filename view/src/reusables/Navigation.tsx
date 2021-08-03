@@ -14,9 +14,9 @@ function Navigation()
                     <Navbar.Toggle></Navbar.Toggle>
                     <Navbar.Collapse>
                         <Nav className="ms-auto">
-                            <Link to="/auth/signup"><Navbar.Brand>Sign Up</Navbar.Brand></Link>
-                            <Link to="/auth/signin"><Navbar.Brand>Sign In</Navbar.Brand></Link>
-                            <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/ar-hazra/"><Navbar.Brand>Creator</Navbar.Brand></a>  
+                            <Link to="/identity/signup"><Navbar.Brand>Sign Up</Navbar.Brand></Link>
+                            <Link to="/identity/signin"><Navbar.Brand>Sign In</Navbar.Brand></Link>
+                            <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/arbhazra/"><Navbar.Brand>Creator</Navbar.Brand></a>  
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
@@ -34,7 +34,7 @@ function Navigation()
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="ms-auto">   
                             <Link to="/account/update"><Navbar.Brand>Account</Navbar.Brand></Link>
-                            <Link to="/auth/signout"><Navbar.Brand>Sign Out</Navbar.Brand></Link>             
+                            <Link to="/identity/signout"><Navbar.Brand>Sign Out</Navbar.Brand></Link>             
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

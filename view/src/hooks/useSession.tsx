@@ -5,7 +5,7 @@ import axios from 'axios'
 //Session Hook
 const useSession = () =>
 {
-    const [state, setState] = useState({ name: '', region: 'Asia/Kolkata', projectCount: 0, documentCount:0, isLoaded: false, hasError: false })
+    const [state, setState] = useState({ name: '', region: 'Asia/Kolkata', documentCount:0, isLoaded: false, hasError: false })
 
     useEffect(() => 
     {
@@ -16,8 +16,7 @@ const useSession = () =>
             try 
             {
                 const response = await axios.get('/api/account/dashboard')
-                console.log(response)
-                setState({ name: response.data.user.name, region: response.data.user.region, projectCount: response.data.projectCount, documentCount: response.data.documentCount, isLoaded: true, hasError: false })
+                setState({ name: response.data.user.name, region: response.data.user.region, documentCount: response.data.documentCount, isLoaded: true, hasError: false })
             } 
             
             catch (error) 

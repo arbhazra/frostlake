@@ -6,7 +6,7 @@ const dotenv = require('dotenv').config()
 const MONGO_URI = process.env.MONGO_URI
 
 //Mongo DB Connection Method
-const MongoConnection = async() =>
+const Connection = async() =>
 {
     try 
     {
@@ -21,4 +21,4 @@ const MongoConnection = async() =>
 }
 
 //Export Statement
-module.exports = MongoConnection
+module.exports = Connection

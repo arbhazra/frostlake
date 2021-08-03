@@ -10,13 +10,7 @@ const DocumentSchema = new mongoose.Schema
         ref: 'user'
     },
 
-    project:
-    {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'project'
-    },
-
-    name:
+    title:
     {
         type: String,
         required: true

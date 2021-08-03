@@ -7,7 +7,7 @@ const otptool = require('otp-without-db')
 const otpgen = require('otp-generator')
 const { check, validationResult } = require('express-validator')
 const User = require('../models/User')
-const sendmail = require('../mail/SendMail')
+const sendmail = require('../utils/SendMail')
 
 //Reading Environment Variables
 const JWT_SECRET = process.env.JWT_SECRET
@@ -341,7 +341,7 @@ router.post
 
                 else
                 {
-                    const isOTPValid = otpTool.verifyOTP(email, otp, hash, key=OTP_KEY, algorithm='sha256')
+                    const isOTPValid = otptool.verifyOTP(email, otp, hash, key=OTP_KEY, algorithm='sha256')
 
                     if(isOTPValid)
                     {

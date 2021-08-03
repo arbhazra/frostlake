@@ -4,7 +4,6 @@ const bcrypt = require('bcryptjs')
 const { check, validationResult } = require('express-validator')
 const auth = require('../middlewares/auth')
 const User = require('../models/User')
-const Project = require('../models/Project')
 const Document = require('../models/Document')
 const router = express.Router()
 
@@ -23,9 +22,8 @@ router.get
         
             if(user)
             {
-                const projectCount = await Project.find({ creator: req.id }).countDocuments()
                 const documentCount = await Document.find({ creator: req.id }).countDocuments()
-                return res.status(200).json({ user, projectCount, documentCount })
+                return res.status(200).json({ user, documentCount })
             }
 
             else
@@ -50,7 +48,8 @@ router.post
 
     [
         check('name', 'Name is required').notEmpty(),
-        check('password', 'Password must be within 8 & 18 chars').isLength(8,18)
+        check('password', 'Password must be within 8 & 18 chars').isLength(8,18),
+        check('region', 'Please Select Region').notEmpty()
     ],
 
     async(req,res)=> 
@@ -64,12 +63,12 @@ router.post
 
         else
         {
-            let { name, password } = req.body
+            let { name, password, region } = req.body
             password = await bcrypt.hash(password, 12)
             
             try
             {
-                await User.findByIdAndUpdate(req.id, { name, password })
+                await User.findByIdAndUpdate(req.id, { name, password, region })
                 return res.status(200).json({ msg: 'Profile Updated' })
             }
             
@@ -81,6 +80,53 @@ router.post
     }
 )
 
+//Reset Account Route
+router.post
+(
+    '/reset', 
+
+    auth, 
+
+    [
+        check('password', 'Password Must Not Be Empty').notEmpty()
+    ],
+
+    async(req,res)=> 
+    {
+        try
+        {
+            let { password } = req.body
+            const user = await User.findById(req.id)
+    
+            if(user)
+            {
+                const isPasswordMatching = await bcrypt.compare(password, user.password)
+                
+                if(isPasswordMatching)
+                {
+                    await Document.deleteMany({ creator: req.id })
+                    return res.status(200).json({ msg: 'Account Reset Success' })
+                }
+    
+                else
+                {
+                    return res.status(401).json({ msg: 'Invalid Password' })
+                }
+            }
+    
+            else
+            {
+                return res.status(401).json({ msg: 'Invalid Password' })
+            }
+        }
+
+        catch(error)
+        {
+            return res.status(401).json({ msg: 'Invalid Password' })
+        }  
+    }
+)
+
 //Close Account Route
 router.post
 (
@@ -88,33 +134,45 @@ router.post
 
     auth, 
 
+    [
+        check('password', 'Password Must Not Be Empty').notEmpty()
+    ],
+
     async(req,res)=> 
     {
-        let { password } = req.body
-        const user = await User.findById(req.id)
 
-        if(user)
+        try 
         {
-            const isPasswordMatching = await bcrypt.compare(password, user.password)
-            
-            if(isPasswordMatching)
+            let { password } = req.body
+            const user = await User.findById(req.id)
+    
+            if(user)
             {
-                await Project.deleteMany({ creator: req.id })
-                await Document.deleteMany({ creator: req.id })
-                await User.findByIdAndDelete(req.id)
-                return res.status(200).json({ msg: 'Account Close Success' })
+                const isPasswordMatching = await bcrypt.compare(password, user.password)
+                
+                if(isPasswordMatching)
+                {
+                    await Document.deleteMany({ creator: req.id })
+                    await User.findByIdAndDelete(req.id)
+                    return res.status(200).json({ msg: 'Account Close Success' })
+                }
+    
+                else
+                {
+                    return res.status(401).json({ msg: 'Invalid Password' })
+                }
             }
-
+    
             else
             {
                 return res.status(401).json({ msg: 'Invalid Password' })
-            }
-        }
-
-        else
+            }    
+        } 
+        
+        catch (error) 
         {
             return res.status(401).json({ msg: 'Invalid Password' })
-        }
+        } 
     }
 )
 

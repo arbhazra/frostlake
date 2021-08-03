@@ -66,16 +66,6 @@ body
 .lead
     font-size: 120%
 
-.logo 
-    font-size: 180%
-    font-weight: bold
-    letter-spacing: 0.2rem
-
-    &box  
-        text-align: center
-        margin-bottom: 2rem
-        letter-spacing: 0.1rem
-
 .box
     top: 54%
     left: 50%
@@ -89,6 +79,11 @@ body
     color: $primaryColor
     font-weight: bold
     border-radius: 4px
+
+    &head
+        font-size: 170%
+        padding-left: 0.8rem
+        letter-spacing: 0.1rem
 
 .jumbotron
     padding: 2rem
@@ -106,6 +101,9 @@ body
     margin-right: 1rem
     margin-bottom: 1rem
     color: $white
+
+    &submit
+        width: 100%
 
     &:hover
         color: $white
@@ -127,27 +125,36 @@ a:active
     border: none
     margin-bottom: 15px
 
-input[type = "text"],
-input[type = "password"],
-input[type = "url"],
-input[type = "email"]
+input,
+.form-control
     outline: 0
     width: 100%
     height: 50px
-    border: none
-    border-radius: 25px
-    background-color: $inputColor
+    border: 1px dashed #c8cbcc
+    border-radius: 50px
+    background-color: $white
     color: $primaryColor
     margin: 5px 0 15px
-    padding: 0px
+    padding-left: 1.5rem
     box-sizing: border-box
     font-size: 14px
-    text-align: center
     animation: transitionIn 0.5s
     font-weight: bolder
 
+input[type="file"]
+    font-weight: bold
+    font-size: 16px
+    background-color: #e9ecef
+    border-radius: 50px
+    border: 1px solid #e9ecef
+
 .form-select
-    background-color: $inputColor
+    outline: 0
+    border: 1px dashed #c8cbcc
+    font-size: 14px
+    padding-left: 1.5rem
+    font-weight: bolder
+    color: #656b6d
     height: 50px
     border-radius: 25px
 
@@ -195,6 +202,7 @@ textarea:focus
     z-index: 2
     padding: 1.3rem
     font-weight: bold
+    box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.2)
     
 .navbar-brand
     font-size: 90%

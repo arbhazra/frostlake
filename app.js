@@ -1,7 +1,7 @@
 //Import Statements
 const express = require('express')
 const path = require('path')
-const MongoConnection = require('./utils/MongoConnection')
+const Connection = require('./utils/Connection')
 const dotenv = require('dotenv').config()
 
 //Initialize Express App
@@ -10,12 +10,12 @@ app.listen(process.env.PORT)
 app.use(express.json({ extended: false, limit: '4mb' }))
 
 //MongoDB Connection
-MongoConnection()
+Connection()
 
 //Defining API Routes
 app.use('/api/account', require('./api/Account'))
-app.use('/api/auth', require('./api/Authentication'))
-app.use('/api/doccloud', require('./api/Cloud'))
+app.use('/api/identity', require('./api/Identity'))
+app.use('/api/document', require('./api/Document'))
 
 //Production Build Combination with React
 if(process.env.NODE_ENV === 'production')

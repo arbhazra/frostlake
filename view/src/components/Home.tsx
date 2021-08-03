@@ -21,8 +21,8 @@ const Home: React.FC = () =>
                 <Container>
                     <div className="cover covertext">
                         <p className="display-4">Innovate anywhere</p>
-                        <p className="lead my-4 fw-bold" style={{ marginLeft: '3px' }}>Build amazing things <br/> Document Cloud for everyone <br/> Share your prototypes on the cloud securely</p>
-                        <Link to ='/auth/signup' className="btn">Sign Up<i className="fas fa-chevron-right"></i></Link>
+                        <p className="lead my-4 fw-bold" style={{ marginLeft: '3px' }}>Build amazing things <br/> Document Cloud for everyone <br/> Share your documents on the cloud securely</p>
+                        <Link to ='/identity/signup' className="btn">Sign Up<i className="fas fa-chevron-right"></i></Link>
                     </div>
                 </Container>
             </Fragment> 
