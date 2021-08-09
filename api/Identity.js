@@ -7,7 +7,7 @@ const otptool = require('otp-without-db')
 const otpgen = require('otp-generator')
 const { check, validationResult } = require('express-validator')
 const User = require('../models/User')
-const sendmail = require('../utils/SendMail')
+const sendmail = require('../functions/SendMail')
 
 //Reading Environment Variables
 const JWT_SECRET = process.env.JWT_SECRET
@@ -73,7 +73,6 @@ router.post
         check('password', 'Password must be within 8 & 18 chars').isLength(8,18),
         check('otp', 'Invalid OTP format').isLength(6),
         check('hash', 'Invalid Hash').notEmpty(),
-        check('region', 'Please Select Region').notEmpty()
     ],
 
     async(req,res)=>
@@ -87,7 +86,7 @@ router.post
 
         else
         {
-            let { name, email, password, otp, hash, region } = req.body
+            let { name, email, password, otp, hash } = req.body
             password = await bcrypt.hash(password, 12)
 
             try 
@@ -105,7 +104,7 @@ router.post
 
                     if(isOTPValid)
                     {
-                        user = new User({ name, email, password, region })
+                        user = new User({ name, email, password })
                         await user.save()
                         const payload = { id: user.id }
                         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: 86400 })

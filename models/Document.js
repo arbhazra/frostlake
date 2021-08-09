@@ -22,6 +22,12 @@ const DocumentSchema = new mongoose.Schema
         required: true
     },
 
+    privacy:
+    {
+        type: String,
+        required: true
+    },
+
     date:
     {
         type: Date,

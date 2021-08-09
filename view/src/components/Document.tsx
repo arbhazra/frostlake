@@ -1,82 +1,77 @@
 //Import Statements
 import React, { Fragment, useState, useEffect } from 'react'
 import axios from 'axios'
-import Navigation from '../reusables/Navigation'
 import { Container, Row, Card, Col, Form } from 'react-bootstrap'
-import Loading from '../reusables/Loading'
-import Error from '../reusables/Error'
-import { useHistory, Link, Redirect } from 'react-router-dom'
-import useSession from '../hooks/useSession'
+import { NavigationModule, LoadingModule, ErrorModule } from './Modules'
+import { useHistory, Redirect, Link } from 'react-router-dom'
+import useSession from '../hooks/UseSession'
+import dateFormat from 'dateformat'
 
 //Create Document Component
-const CreateDocument: React.FC = (props: any) =>
+const CreateDocument: React.FC = () =>
 {
     //LOGIC
     const session = useSession()
-    const [state, setState] = useState({ title: '', content: '', project: '', alert: '' })
-    const history = useHistory()
-    const id = props.match.params.id
+    const [state, setState] = useState({ title: '', content: '', privacy: '' })
+    const [alert, setAlert] = useState('')
 
     const readFile = (e) =>
     {
-        setState({ ...state, alert: 'hello' })
-
         try 
         {
             e.preventDefault()
             const file = e.target.files[0]
-            
-            if(file.name.split('.').pop() === 'txt' && file.size < 1048576)
+
+            if(file.size < 30000000)
             {
                 const reader = new FileReader()
-                reader.readAsText(file)
+                reader.readAsDataURL(file)
+
                 reader.onload = () =>
                 {
-                    setState({ ...state, content: reader.result.toString(), project: id })
+                    setState({ ...state, title: file.name, content: reader.result.toString() })
                 }
         
                 reader.onerror = () =>
                 {
-                    setState({ ...state, alert: 'File Size Too Large' })
-                }
+                    setAlert('File Size Too Large')
+                }   
             }
-    
+
             else
             {
-                setState({ ...state, alert: 'Unsupported File' })
-            }       
+                setAlert('File Size Too Large')
+            }
         } 
         
         catch (error) 
         {
-            setState({ ...state, alert: 'Please Choose A File' })
+            setAlert('File Size Too Large')
         }
     }
 
     let handleSubmit = async(e:any) =>
     {
         e.preventDefault()
-        setState({ ...state, alert: 'Creating Document' })
+        setAlert('Creating Document')
         
-        axios.defaults.headers.common['x-auth-token'] = localStorage.getItem('token')
-
         try
         {
-            const res = await axios.post(`/api/document/create`, state)
-            history.push(`/document/view/${res.data._id}`)
-            setState({ ...state, alert: 'Document Uploaded' })
+            axios.defaults.headers.common['x-auth-token'] = localStorage.getItem('token')
+            await axios.post('/api/document/create', state)
+            setAlert('Document Uploaded')
         } 
 
         catch (error: any) 
         {
             if(error.response)
             {
-                setState({ ...state, alert: error.response.data.msg })
+                setAlert('File Size Too Large')
             }
 
             else
             {
-                setState({ ...state, alert: 'An Error Occured' })
+                setAlert('File Size Too Large')
             }
         }  
     }
@@ -91,15 +86,18 @@ const CreateDocument: React.FC = (props: any) =>
     {
         return (
             <Fragment>
-                <Navigation/>
+                <NavigationModule />
                 <form className='box' onSubmit={ handleSubmit }> 
                     <p className='boxhead'>Create Document</p>
-                    <input type='text' name='title' placeholder='Document Title' onChange={ (e) => setState({ ...state, title: e.target.value }) } autoComplete='off' required />
-                    <Form.Group controlId="formFileLg" className="mb-3">
-                        <Form.Label>Choose Text Document</Form.Label>
-                        <Form.Control type="file" size="lg" onChange={ readFile } accept=".txt" />
+                    <Form.Group controlId='formFileLg' className='mb-3'>
+                        <Form.Control type='file' size='lg' onChange={ readFile } />
                     </Form.Group>
-                    <p id='alert'>{ state.alert }</p>
+                    <Form.Select onChange = { (e) => setState({ ...state, privacy: (e.target as any).value }) }>
+                        <option value=''>Select Document Privacy</option>
+                        <option value='private'>Private</option>
+                        <option value='public'>Public</option>
+                    </Form.Select><br/>
+                    <p id='alert'>{ alert }</p>
                     <button type='submit' className='btn btnsubmit'>Create<i className='fas fa-chevron-right'></i></button>
                 </form>
             </Fragment>   
@@ -112,7 +110,7 @@ const DocumentLibrary: React.FC = () =>
 {
     //LOGIC
     const session = useSession()
-    const [state, setState] = useState({ documents: [], isLoaded: false, show: false, alert: '' })
+    const [state, setState] = useState({ documents: [], isLoaded: false, alert: '' })
     const history = useHistory()
 
     useEffect(() => 
@@ -121,6 +119,7 @@ const DocumentLibrary: React.FC = () =>
         {
             try 
             {
+                axios.defaults.headers.common['x-auth-token'] = localStorage.getItem('token')
                 const response = await axios.get('/api/document/library')
                 setState({ ...state, documents: response.data, isLoaded: true })
             } 
@@ -134,24 +133,64 @@ const DocumentLibrary: React.FC = () =>
         fetchLibrary()   
     }, [])
 
-    let documentItems = state.documents.map((item:any)=>
+    const removeDocument = async(id: any) =>
+    {
+        const answer = window.confirm('Are you sure that you want to remove document?')
+        
+        if(answer)
+        {
+            try 
+            {
+                let documents = state.documents.filter((document:any) =>
+                {
+                    return id !== document._id
+                })
+    
+                setState({ ...state, documents: documents })
+                axios.defaults.headers.common['x-auth-token'] = localStorage.getItem('token')
+                await axios.delete(`/api/document/delete/${id}`)
+            } 
+            
+            catch (error) 
+            {
+                window.alert('Error removing document')
+            }
+        }
+    }
+
+    const copyLink = (id: any) =>
+    {
+        navigator.clipboard.writeText(`${window.location.protocol}//${window.location.host}/document/save/${id}`)
+        document.getElementById(`alert-${id}`).innerHTML = 'Link Copied'
+        setTimeout(() => {
+            document.getElementById(`alert-${id}`).innerHTML = ''
+        }, 3000)
+    }
+
+    let documentItems = state.documents.map((item:any) =>
     {
         return(
-            <Card className='text-center' key={ item._id }>
-                <Link to={ `/document/view/${item._id}` }>
-                    <Card.Header className='text-white'>
+            <Col xs={12} sm={12} md={6} lg={6} xl={4} key={ Math.random() }>
+                <Card className='text-center' key={ item._id }>     
+                    <Card.Header>
                         <Row className='align-items-center'>
-                            <Col>
-                                <i className='fas fa-key fa-2x'></i>
+                            <Col>  
+                                <p className='filedetails' title={ item.title }>{ item.title.slice(0,15) }</p>
+                                <p className='filedetails'>{ dateFormat(item.date, "fullDate") }</p>
                             </Col>
                             <Col>
-                                <p className='logo'>{ item.title }</p>
-                                <p>{ item.date.slice(0,15) }</p>
+                                { item.privacy == 'private'? <i className="fas fa-key fa-2x" title='Private'></i> : <i className="fas fa-user fa-2x" title='Public'></i> }
                             </Col>
                         </Row>
                     </Card.Header>
-                </Link>
-            </Card>
+                    <Card.Footer className='align-items-center'>
+                        <Link to={ `/document/save/${item._id}` }><i className="fas fa-bookmark fa-2x" title='Save Document'></i></Link>              
+                        { item.privacy == 'public'? <i className="fas fa-clipboard fa-2x" title='Get Sharable Public Link' onClick={ () => copyLink(item._id) }></i> : <></> }
+                        <i className='fas fa-trash fa-2x' title='Remove' onClick={ () => removeDocument(item._id) }></i>
+                        <p id={ `alert-${item._id}` } style={{ color: 'white' }}></p>
+                    </Card.Footer>
+                </Card>
+            </Col>
         )
     })
 
@@ -169,8 +208,11 @@ const DocumentLibrary: React.FC = () =>
             {
                 return(
                     <Fragment>
-                        <Navigation/>
-                        <Error type='forward' message='No Documents' btn='Create Document' btnlink='/document/create' />
+                        <NavigationModule />
+                        <div className="box">
+                            <p className="boxhead">Library is Empty</p>
+                            <Link to='/document/create' className="btn btnsubmit">Create Document <i className="fas fa-chevron-right"></i></Link>
+                        </div>
                     </Fragment>
                 ) 
             }
@@ -179,10 +221,12 @@ const DocumentLibrary: React.FC = () =>
             {
                 return(
                     <Fragment>
-                        <Navigation/>
-                        <Container style={{ minWidth: '70%' }}>
-                            { documentItems }
-                        </Container>     
+                        <NavigationModule />
+                        <Container style={{ minWidth: '80%' }}>
+                            <Row>
+                                { documentItems }
+                            </Row>
+                        </Container>
                     </Fragment>
                 )     
             }
@@ -190,134 +234,69 @@ const DocumentLibrary: React.FC = () =>
     
         else
         {
-            return <Loading />
+            return <LoadingModule />
         }
     }
 
     
 }
 
-//View Document Component
-const ViewDocument: React.FC = (props: any) =>
+//Save Document Component
+const SaveDocument: React.FC =(props : any) =>
 {
-    //LOGIC
-    const session = useSession()
-    const [state, setState] = useState({ title: '', content: '', isLoaded: false, error: false, alert: '' })
-    const { id } = props.match.params
-    const history = useHistory()
+    const [isDownloading, setDownloading] = useState(true)
+    const [error, setError] = useState(false)
 
     useEffect(() => 
     {
-        let fetchDocument = async() =>
+        const fetchDocument = async() =>
         {
             try 
             {
-                const response = await axios.get(`/api/document/view/${id}`)
-                console.log(response)
-                setState({ ...state, title: response.data.document.title, content: response.data.document.content, isLoaded: true })     
+                axios.defaults.headers.common['x-auth-token'] = localStorage.getItem('token')
+                const response = await axios.get(`/api/document/save/${props.match.params.id}`)
+                const element = document.createElement('a')
+                const url = response.data.document.content
+                fetch(url).then(res => res.blob())
+                .then(blob => 
+                {
+                    const file = new File([blob], 'File name')
+                    element.href = URL.createObjectURL(file)
+                    element.download = response.data.document.title
+                    document.body.appendChild(element)
+                    element.click()
+                })
+                setDownloading(false) 
             } 
             
             catch (error) 
             {
-                setState({ ...state, error: true, isLoaded: true }) 
+                setError(true)
             }
-        } 
+        }
 
         fetchDocument()
     }, [])
 
-    const updateDocument = async(e) =>
+    if(error)
     {
-        e.preventDefault()
-
-        try 
-        {
-            const response = await axios.post(`/api/document/update/${id}`, state)
-            setState({ ...state, alert: response.data.msg })  
-        } 
-        
-        catch (error) 
-        {
-            setState({ ...state, error: true, isLoaded: true }) 
-        }
+        return(
+            //@ts-ignore
+            <ErrorModule message='No Access' />
+        )
     }
 
-    const downloadDocument = () =>
-    {
-        const element = document.createElement('a')
-        const blob = new Blob([(document.getElementById('content') as HTMLInputElement).value], { type: 'text/plain;charset=utf-8' })
-        element.href = URL.createObjectURL(blob)
-        element.download = (document.getElementById('title') as HTMLInputElement).value
-        document.body.appendChild(element)
-        element.click()
-        setState({ ...state, alert: 'Document Downloaded' })
-    }
-
-    const deleteDocument = async(e) =>
-    {
-        e.preventDefault()
-
-        try 
-        {
-            await axios.delete(`/api/document/delete/${id}`)
-            history.push(`/document/library`)
-        } 
-        
-        catch (error) 
-        {
-            console.log(error)
-        }
-    }
-
-    //JSX
-    if(session.hasError)
-    {
-        return <Redirect to='/identity/signin' />
-    }
-
-    else
-    {
-        if(state.error)
-        {
-            return <Error type='backward' message='Not Found' btn='Go Back' btnlink='/'/>
-        }
-
-        else
-        {
-            if(state.isLoaded)
-            {
-                return(
-                    <Fragment>
-                        <Navigation />
-                        <Container style={{ minWidth: '70%' }}>
-                            <div className='jumbotron'>
-                                <Form onSubmit={ updateDocument }>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>Document Title</Form.Label>
-                                        <Form.Control type="text" id="title" placeholder="Document Name" value={ state.title } onChange={ (e) => setState({ ...state, title: e.target.value }) } />
-                                    </Form.Group>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>Content</Form.Label>
-                                        <Form.Control as="textarea" id="content" style={{ height: '30rem' }} value= { state.content } onChange={ (e) => setState({ ...state, content: e.target.value }) }/>
-                                    </Form.Group>
-                                    <p id="alert">{ state.alert }</p>
-                                    <button type="submit" className="btn btn-block" onClick={ updateDocument }><i className="fas fa-check"></i></button>
-                                </Form>
-                                <button className="btn btn-block" onClick={ downloadDocument }><i className="fas fa-long-arrow-alt-down"></i></button>
-                                <button className="btn btn-block" onClick={ deleteDocument }><i className="far fa-trash-alt"></i></button>
-                            </div>
-                        </Container>
-                    </Fragment>
-                )
-            }
-
-            else
-            {
-                return <Loading />
-            }
-        }
-    }
+    return(
+        <Fragment>
+        <NavigationModule />
+            <div className='box text-center'>
+                { isDownloading? <p className='boxhead'>Downloading</p> : <p className='boxhead'>Download Done</p> }
+                { isDownloading? <i className='fas fa-circle-notch fa-spin fa-6x'></i> : <i className='fas fa-check-circle fa-6x'></i> }<br/><br/>
+                <button onClick={ () => window.history.back() } className='btn btnsubmit'><i className='fas fa-chevron-left'></i>Go Back</button>
+            </div>
+        </Fragment>
+    )
 }
 
 //Export Statements
-export { CreateDocument, DocumentLibrary, ViewDocument }
+export { CreateDocument, DocumentLibrary, SaveDocument }

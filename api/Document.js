@@ -1,9 +1,14 @@
 //Import Statements
 const express = require('express')
+const jwt = require('jsonwebtoken')
 const { check, validationResult } = require('express-validator')
 const auth = require('../middlewares/auth')
 const Document = require('../models/Document')
 const router = express.Router()
+const dotenv = require('dotenv').config()
+
+//Reading Environment Variables
+const JWT_SECRET = process.env.JWT_SECRET
 
 //Create Document Route
 router.post
@@ -13,8 +18,9 @@ router.post
     auth,
 
     [
-        check('title', 'Title Must Not Be Empty').notEmpty(),
-        check('content', 'Content Must Not Be Empty').notEmpty()
+        check('title', 'Title must not be empty').notEmpty(),
+        check('content', 'Content must not be empty').notEmpty(),
+        check('privacy', 'Privacy field can not be empty').notEmpty()
     ],
 
     async(req, res) =>
@@ -28,7 +34,7 @@ router.post
 
         else
         {
-            const { title, content } = req.body
+            const { title, content, privacy } = req.body
 
             try 
             {
@@ -36,9 +42,9 @@ router.post
                 
                 if(count < 100)
                 {
-                    let document = new Document({ creator: req.id, title, content })
+                    let document = new Document({ creator: req.id, title, content, privacy })
                     await document.save()
-                    return res.status(200).json(document)  
+                    return res.status(200).json({ msg: 'Document Created' })  
                 }
 
                 else
@@ -66,7 +72,7 @@ router.get
     {
         try 
         {
-            const documents = await Document.find({ creator: req.id }).sort({ date: -1 })
+            const documents = await Document.find({ creator: req.id }).select('-content').sort({ date: -1 })
             return res.status(200).json(documents)
         } 
         
@@ -78,75 +84,44 @@ router.get
     }
 )
 
-//View Document Route
+//Save Document Route
 router.get
 (
-    '/view/:id', 
-
-    auth, 
+    '/save/:id', 
 
     async(req,res)=> 
     {
         try 
         {
+            const token = req.header('x-auth-token')
             const document = await Document.findById(req.params.id)
-            
-            if(document.creator.toString() === req.id)
+
+            if(document.privacy == 'private')
             {
-                return res.status(200).json({ document })
+                const decoded = jwt.verify(token, JWT_SECRET) 
+                
+                if(decoded.id == document.creator)
+                {
+                    return res.status(200).json({ document })
+                }
+
+                else
+                {
+                    return res.status(404).json({ msg: 'No Access' })
+                }
             }
-            
+
             else
             {
-                return res.status(401).json({ msg: 'Access Denied' })
+                return res.status(200).json({ document })
             }
         }
          
         catch (error) 
         {
-            return res.status(404).json({ msg: 'Document Not Found' })
+            return res.status(404).json({ msg: 'No Access' })
         }
         
-    }
-)
-
-//Update Document Route
-router.post
-(
-    '/update/:id',
-
-    auth,
-
-    [
-        check('title', 'Title Must Not Be Empty').notEmpty(),
-        check('content', 'Content Must Not Be Empty').notEmpty()
-    ],
-
-    async(req, res) =>
-    {
-        const errors = validationResult(req)
-        console.log(req.body)
-
-        if(!errors.isEmpty())
-        {
-            return res.status(400).json({ msg: errors.array()[0].msg })
-        }
-
-        else
-        {
-            const { title, content } = req.body
-
-            try 
-            {
-                await Document.findByIdAndUpdate(req.params.id, { title, content })
-                return res.status(200).json({ msg: 'Document Updated' })
-            } 
-
-            catch (error) 
-            {
-                return res.status(500).json({ msg: 'Error Creating Document' })
-            }
-        }
     }
 )
 

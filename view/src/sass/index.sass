@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap")
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap')
 
 $navColor: #1a1a1f
 $primaryColor: #1a1a1f
@@ -19,7 +19,7 @@ body
     background-size: cover
     background-attachment: fixed
     color: $white
-    font-family: "Quicksand", sans-serif
+    font-family: 'Quicksand', sans-serif
     -webkit-font-smoothing: antialiased
     -moz-osx-font-smoothing: grayscale
 
@@ -33,38 +33,18 @@ body
     &text
         padding-left: 1.5rem
 
-    &loader
-        text-align: center
-
 .card
     background-color: $primaryColor
     margin: 1em 0em 1em 0em
     font-weight: bold
     border: none
-    border-radius: 100px !important
- 
-    &-header   
-        background: $primaryColor
-        border-radius: 100px !important
-
-.jumbotron 
-    margin-top: 2rem
-    background: $white
-    color: $primaryColor
     border-radius: 4px
-    font-weight: bold
-
-    &name   
-        font-size: 180%
-    
-    &date  
-        font-size: 120%
-    
-    &content  
-        font-size: 100%
 
 .lead
     font-size: 120%
+
+.filedetails
+    font-size: 70%
 
 .box
     top: 54%
@@ -79,14 +59,11 @@ body
     color: $primaryColor
     font-weight: bold
     border-radius: 4px
+    text-align: center
 
     &head
         font-size: 170%
-        padding-left: 0.8rem
         letter-spacing: 0.1rem
-
-.jumbotron
-    padding: 2rem
 
 .btn
     border: none
@@ -125,7 +102,9 @@ a:active
     border: none
     margin-bottom: 15px
 
-input,
+input[type='text'],
+input[type='email'],
+input[type='password'],
 .form-control
     outline: 0
     width: 100%
@@ -141,12 +120,14 @@ input,
     animation: transitionIn 0.5s
     font-weight: bolder
 
-input[type="file"]
+input[type='file']::file-selector-button
     font-weight: bold
-    font-size: 16px
-    background-color: #e9ecef
+    font-size: 12px
+    text-align: right
+    height: 50px
+    background-color: $white
     border-radius: 50px
-    border: 1px solid #e9ecef
+    border: none
 
 .form-select
     outline: 0
@@ -158,21 +139,7 @@ input[type="file"]
     height: 50px
     border-radius: 25px
 
-textarea 
-    width: 100%
-    height: 120px
-    padding: 12px 20px
-    box-sizing: border-box
-    color: $primaryColor
-    outline: none
-    border: none
-    resize: none
-    border-radius: 20px
-    font-weight: bolder
-    background-color: $inputColor
-
-input:focus,
-textarea:focus
+input:focus
     border: 1px dashed $primaryColor
 
 #alert 
@@ -182,20 +149,13 @@ textarea:focus
     font-size: 1rem
     animation: transitionIn 0.5s
 
-.fa-chevron-right
-    font-size: 0.9em
-    padding-left: 0.7rem
+.fas
+    padding-left: 0.6rem
+    padding-right: 0.6rem
+    cursor: pointer
 
-.fa-chevron-left,
-.fa-external-link-square-alt
-    font-size: 0.9em
-    padding-right: 0.8rem
-
-.fa-cog
-    color: $primaryColor
-
-.fa-stream
-    color: $primaryColor
+.fa-2x
+    padding: 1.2rem 1.5rem 1.2rem 1.5rem
 
 .navbar 
     background-color: $navColor

@@ -1,63 +1,17 @@
 //Import Statements
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import axios from 'axios'
-import Loading from '../reusables/Loading'
-import Clock from 'react-live-clock'
 import { Redirect, useHistory, Link } from 'react-router-dom'
-import { Container } from 'react-bootstrap'
-import Navigation from '../reusables/Navigation'
-import useSession from '../hooks/useSession'
-import { Form } from 'react-bootstrap'
-import timezone from '../api/timezone'
-
-//Dashboard Component
-const Dashboard: React.FC = () =>
-{
-    //LOGIC
-    const session = useSession()
-    
-    //JSX
-    if(session.hasError)
-    {
-        return <Redirect to = '/identity/signin' />
-    }
-
-    else
-    {
-        if(session.isLoaded)
-        {
-            return(
-                <Fragment>
-                    <Navigation />
-                    <Container>
-                        <div className="cover covertext">
-                            <p className="display-4"><Clock format={ 'hh : mm a' } ticking={ true } timezone={ session.region } /></p>
-                            <p className="lead my-4 fw-bold" style={{ marginLeft: '3px' }}>
-                                { `Welcome, ${session.name.split(" ")[0]}` }<br/> 
-                                { ` Document Storage: ${ session.documentCount } % Used, ${ (100- session.documentCount) } % Free` }
-                            </p>
-                            <Link to ='/document/create' className="btn">Create Document<i className="fas fa-chevron-right"></i></Link>
-                            <Link to ='/document/library' className="btn">Document Library<i className="fas fa-chevron-right"></i></Link>
-                        </div>
-                    </Container>
-                </Fragment> 
-            )
-        }
-
-        else
-        {
-            return <Loading />
-        }
-    }
-}
+import { ProgressBar } from 'react-bootstrap'
+import { NavigationModule, LoadingModule } from './Modules'
+import useSession from '../hooks/UseSession'
 
 //Update Account Component
 const UpdateAccount: React.FC = () =>
 {
     //LOGIC
     const session = useSession()
-    const [state, setState] = useState({ name: '', password: '', region: '', alert: '' })
-    const [regions, setRegions] = useState(timezone)
+    const [state, setState] = useState({ name: '', password: '', alert: '' })
     const history = useHistory()
 
     let handleUpdate = async(e:any) =>
@@ -69,7 +23,6 @@ const UpdateAccount: React.FC = () =>
         {
             axios.defaults.headers.common['x-auth-token'] = localStorage.getItem('token')
             const res = await axios.post('/api/account/update', state)
-            const response = await axios.get('/api/account/dashboard')
             setState({ ...state, alert: res.data.msg })
         } 
         
@@ -109,23 +62,14 @@ const UpdateAccount: React.FC = () =>
         {
             return (
                 <Fragment>
-                    <Navigation />
-                    <form className="box" onSubmit = { handleUpdate }>   
-                        <p className="boxhead">Update Account</p>
-                        <input type="text" id="name" name="name" placeholder="Change Name" onChange={ (e) => setState({ ...state, name: e.target.value }) } defaultValue={ session.name } autoComplete="off" required minLength={3} maxLength={40} />
-                        <input type="password" id="new-password" autoComplete={ 'new-password' } name="password" placeholder="Old/New Password" onChange={ (e) => setState({ ...state, password: e.target.value }) } required minLength={8} maxLength={20} />
-                        <Form.Select onChange = { (e) => setState({ ...state, region: (e.target as any).value }) }>
-                            <option>Select Cloud Region</option>
-                            {
-                                regions.map(region =>
-                                {
-                                    return <option value={ region } key={ region }>{ region }</option>
-                                })
-                            }
-                        </Form.Select><br/>
-                        <p id="alert">{ state.alert }</p>
-                        <button type="submit" className="btn btnsubmit">Update Account<i className="fas fa-chevron-right"></i></button><br/>
-                        <Link to='/account/reset' className='boxlink'>Reset Your Account</Link><br/>
+                    <NavigationModule />
+                    <form className='box' onSubmit = { handleUpdate }>   
+                        <p className='boxhead'>Update Account</p>
+                        <input type='text' id='name' name='name' placeholder='Change Name' onChange={ (e) => setState({ ...state, name: e.target.value }) } defaultValue={ session.name } autoComplete='off' required minLength={3} maxLength={40} />
+                        <input type='password' id='new-password' autoComplete={ 'new-password' } name='password' placeholder='Old/New Password' onChange={ (e) => setState({ ...state, password: e.target.value }) } required minLength={8} maxLength={20} />
+                        <p id='alert'>{ state.alert }</p>
+                        <button type='submit' className='btn btnsubmit'>Update Account<i className='fas fa-chevron-right'></i></button><br/>
+                        <Link to='/account/storage' className='boxlink'>Account Storage</Link><br/>
                         <Link to='/account/close' className='boxlink'>Close Your Account</Link>
                     </form>
                 </Fragment>   
@@ -134,37 +78,36 @@ const UpdateAccount: React.FC = () =>
 
         else
         {
-            return <Loading />
-        }
-        
+            return <LoadingModule />
+        }   
     }
 }
 
-//Reset Account Component
-const ResetAccount: React.FC = () =>
+//Account Storage Component
+const AccountStorage: React.FC = () =>
 {
     //LOGIC
     const session = useSession()
-    const [state, setState] = useState({ password: '', alert: '' })
+    const [state, setState] = useState({ documentCount: 0 })
     const history = useHistory()
 
-    let handleClose = async(e:any) =>
+    useEffect(() => 
     {
-        e.preventDefault()
-        setState({ ...state, alert: 'Resetting Account' })
+        (async () => 
+        {
+            try 
+            {
+                axios.defaults.headers.common['x-auth-token'] = localStorage.getItem('token')
+                const response = await axios.get('/api/account/storage')
+                setState({ documentCount: response.data.documentCount })
+            } 
             
-        try 
-        {
-            axios.defaults.headers.common['x-auth-token'] = localStorage.getItem('token')
-            await axios.post('/api/account/reset', state)
-            setState({ ...state, alert: 'Account Reset Success' })
-        } 
-        
-        catch (error) 
-        {
-            setState({ ...state, alert: 'Invalid Password' })
-        }
-    }
+            catch (error) 
+            {
+                history.push('/identity/signin')
+            }
+        })()
+    }, [])
 
     //JSX
     if(session.hasError)
@@ -174,17 +117,25 @@ const ResetAccount: React.FC = () =>
 
     else
     {
-        return (
-            <Fragment>
-                <Navigation />
-                <form className="box" onSubmit = { handleClose }>   
-                    <p className="boxhead">Reset Account</p>
-                    <input type="password" name="password" placeholder="Your Password" onChange={ (e) => setState({ ...state, password: e.target.value }) } required autoComplete="off" />
-                    <p id="alert">{ state.alert }</p>
-                    <button type="submit" className="btn btnsubmit">Reset Account<i className="fas fa-chevron-right"></i></button>
-                </form>
-            </Fragment>
-        )
+        if(session.isLoaded)
+        {
+            return (
+                <Fragment>
+                    <NavigationModule />
+                    <div className='box'>   
+                        <p className='boxhead'>Account Storage</p>
+                        <ProgressBar now={ state.documentCount } striped animated /><br/>
+                        <p className="boxhead">{ state.documentCount} % storage used</p>
+                    </div>
+                </Fragment>   
+            )
+        }
+
+        else
+        {
+            return <LoadingModule />
+        }
+        
     }
 }
 
@@ -225,12 +176,12 @@ const CloseAccount: React.FC = () =>
     {
         return (
             <Fragment>
-                <Navigation />
-                <form className="box" onSubmit = { handleClose }>   
-                    <p className="boxhead">Close Account</p>
-                    <input type="password" name="password" placeholder="Your Password" onChange={ (e) => setState({ ...state, password: e.target.value }) } required autoComplete="off" />
-                    <p id="alert">{ state.alert }</p>
-                    <button type="submit" className="btn btnsubmit">Close Account<i className="fas fa-chevron-right"></i></button>
+                <NavigationModule />
+                <form className='box' onSubmit = { handleClose }>   
+                    <p className='boxhead'>Close Account</p>
+                    <input type='password' name='password' placeholder='Your Password' onChange={ (e) => setState({ ...state, password: e.target.value }) } required autoComplete='off' />
+                    <p id='alert'>{ state.alert }</p>
+                    <button type='submit' className='btn btnsubmit'>Close Account<i className='fas fa-chevron-right'></i></button>
                 </form>
             </Fragment>
         )
@@ -238,4 +189,4 @@ const CloseAccount: React.FC = () =>
 }
 
 //Export Statement
-export { Dashboard, UpdateAccount, CloseAccount, ResetAccount }
+export { AccountStorage, UpdateAccount, CloseAccount }

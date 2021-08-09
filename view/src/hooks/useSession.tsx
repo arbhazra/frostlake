@@ -5,18 +5,17 @@ import axios from 'axios'
 //Session Hook
 const useSession = () =>
 {
-    const [state, setState] = useState({ name: '', region: 'Asia/Kolkata', documentCount:0, isLoaded: false, hasError: false })
+    const [state, setState] = useState({ name: '', documentCount:0, isLoaded: false, hasError: false })
 
     useEffect(() => 
     {
         let authAPI = async() =>
         {
-            axios.defaults.headers.common['x-auth-token'] = localStorage.getItem('token') 
-    
             try 
             {
-                const response = await axios.get('/api/account/dashboard')
-                setState({ name: response.data.user.name, region: response.data.user.region, documentCount: response.data.documentCount, isLoaded: true, hasError: false })
+                axios.defaults.headers.common['x-auth-token'] = localStorage.getItem('token') 
+                const response = await axios.get('/services/session/getactiveuser')
+                setState({ name: response.data.user.name, documentCount: response.data.documentCount, isLoaded: true, hasError: false })
             } 
             
             catch (error) 

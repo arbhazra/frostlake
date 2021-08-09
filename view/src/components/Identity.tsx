@@ -2,15 +2,12 @@
 import React, { Fragment, useState } from 'react'
 import axios from 'axios'
 import { Redirect, Link, useHistory } from 'react-router-dom'
-import Navigation from '../reusables/Navigation'
-import { Form } from 'react-bootstrap'
-import timezone from '../api/timezone'
+import { NavigationModule } from './Modules'
 
-//Signup Component
-const SignUp: React.FC = () =>
+//Sign Up Component
+const SignUp : React.FC = () =>
 {
-    const [state, setState] = useState({ name: '', email: '', password: '', region: '', otp: '', hash:'', alert: '' })
-    const [regions, setRegions] = useState(timezone)
+    const [state, setState] = useState({ name: '', email: '', password: '', otp: '', hash:'', alert: '' })
     const [show, setShow] = useState({ step1: true, step2: false })
     const history: any = useHistory()
 
@@ -50,7 +47,7 @@ const SignUp: React.FC = () =>
             const response = await axios.post('/api/identity/signup/register', state)
             axios.defaults.headers.common['x-auth-token'] = response.data.token
             localStorage.setItem('token', response.data.token)
-            history.push('/account/dashboard')
+            history.push('/document/library')
         } 
         
         catch (error: any) 
@@ -69,27 +66,18 @@ const SignUp: React.FC = () =>
 
     if(localStorage.getItem('token'))
     {
-        return(<Redirect to='/account/dashboard' />)
+        return(<Redirect to='/document/library' />)
     }
 
     else
     {
         return(
             <Fragment>
-                <Navigation/>
+                <NavigationModule />
                 <form className='box' onSubmit = { getOTP } style={{ display: show.step1? 'block': 'none' }}>   
                     <p className='boxhead'>Sign Up</p>
                     <input type='text' name='name' placeholder='Your Name' onChange={ (e) => setState({ ...state, name: e.target.value }) } required autoComplete = {'off'}  minLength={3} maxLength={40} />
                     <input type='email' name='email' placeholder='Email Address' onChange={ (e) => setState({ ...state,  email: e.target.value }) } required autoComplete = {'off'}  minLength={4} maxLength={40}/>
-                    <Form.Select onChange = { (e) => setState({ ...state, region: (e.target as any).value }) }>
-                        <option>Select Cloud Region</option>
-                        {
-                            regions.map(region =>
-                            {
-                                return <option value={ region } key={ region }>{ region }</option>
-                            })
-                        }
-                    </Form.Select><br/>
                     <p id='alert'>{ state.alert }</p>
                     <button type='submit' className='btn btnsubmit'>Continue<i className='fas fa-chevron-right'></i></button>
                     <Link to='/identity/signin' className='boxlink'>Already a member? Sign In</Link>
@@ -97,8 +85,7 @@ const SignUp: React.FC = () =>
                 <form className='box' onSubmit = { register } style={{ display: show.step2? 'block': 'none' }}>   
                     <p className='boxhead'>Sign Up</p>
                     <input type='password' name='password' placeholder='Choose a Password' onChange={ (e) => setState({ ...state,  password: e.target.value }) } required autoComplete = {'off'}  minLength={8} maxLength={20}/>
-                    <input type='text' name='otp' placeholder='Enter OTP sent to you' onChange={ (e) => setState({ ...state,  otp: e.target.value }) } required autoComplete = {'off'}  minLength={6} maxLength={6}/>
-                    
+                    <input type='text' name='otp' placeholder='Enter OTP sent to you' onChange={ (e) => setState({ ...state,  otp: e.target.value }) } required autoComplete = {'off'}  minLength={6} maxLength={6}/>      
                     <p id='alert'>{ state.alert }</p>
                     <button type='submit' className='btn btnsubmit'>Sign Up<i className='fas fa-chevron-right'></i></button>
                 </form>
@@ -107,8 +94,8 @@ const SignUp: React.FC = () =>
     }
 }
 
-//Signin Component
-const SignIn: React.FC = () =>
+//Sign In Component
+const SignIn : React.FC = () =>
 {
     const [state, setState] = useState({ email: '', password: '', otp: '', hash:'', alert: '' })
     const [show, setShow] = useState({ step1: true, step2: false })
@@ -150,9 +137,8 @@ const SignIn: React.FC = () =>
         {
             const res = await axios.post('/api/identity/signin/login', state)
             axios.defaults.headers.common['x-auth-token'] = res.data.token
-            const response = await axios.get('/api/account/dashboard')  
             localStorage.setItem('token', res.data.token)
-            history.push('/account/dashboard')
+            history.push('/document/library')
         } 
         
         catch (error: any) 
@@ -171,14 +157,14 @@ const SignIn: React.FC = () =>
 
     if(localStorage.getItem('token'))
     {
-        return (<Redirect to='/account/dashboard' />)
+        return (<Redirect to='/document/library' />)
     }
 
     else
     {
         return (
             <Fragment>
-                <Navigation />
+                <NavigationModule />
                 <form className='box' onSubmit = { getOTP } style={{ display: show.step1? 'block': 'none' }}>   
                     <p className='boxhead'>Sign In</p>
                     <input type='email' name='email' placeholder='Email Address' onChange={ (e) => setState({ ...state, email: e.target.value }) } required autoComplete = {'off'}/>
@@ -199,7 +185,7 @@ const SignIn: React.FC = () =>
 }
 
 //Password Reset Component
-const PasswordReset: React.FC = () =>
+const PasswordReset : React.FC = () =>
 {
     const [state, setState] = useState({ email: '', password: '', otp: '', hash:'', alert: '' })
     const [show, setShow] = useState({ step1: true, step2: false })
@@ -257,14 +243,14 @@ const PasswordReset: React.FC = () =>
 
     if(localStorage.getItem('token'))
     {
-        return (<Redirect to='/account/dashboard' />)
+        return (<Redirect to='/document/library' />)
     }
 
     else
     {
         return (
             <Fragment>
-                <Navigation />
+                <NavigationModule />
                 <form className='box' onSubmit = { getOTP } style={{ display: show.step1? 'block': 'none' }}>   
                     <p className='boxhead'>Reset Password</p>
                         <input type='email' name='email' placeholder='Email Address' onChange={ (e) => setState({ ...state, email: e.target.value }) } required autoComplete = {'off'}  />
@@ -283,8 +269,8 @@ const PasswordReset: React.FC = () =>
     }
 }
 
-//Signout Component
-const SignOut: React.FC = () =>
+//Sign Out Component
+const SignOut : React.FC = () =>
 {
     //LOGIC
     localStorage.removeItem('token')

@@ -84,7 +84,7 @@ const isLocalhost = Boolean(
               } else {
                 // At this point, everything has been precached.
                 // It's the perfect time to display a
-                // "Content is cached for offline use." message.
+                // 'Content is cached for offline use.' message.
                 console.log('Content is cached for offline use.');
   
                 // Execute callback

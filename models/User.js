@@ -23,12 +23,6 @@ const UserSchema = new mongoose.Schema
         required: true
     },
 
-    region:
-    {
-        type: String,
-        required: true
-    },
-
     date:
     {
         type: Date,

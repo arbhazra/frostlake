@@ -7,29 +7,19 @@ const User = require('../models/User')
 const Document = require('../models/Document')
 const router = express.Router()
 
-//Dashboard Route
+//Account Storage Route
 router.get
 (
-    '/dashboard', 
+    '/storage',
 
-    auth, 
+    auth,
 
-    async(req,res)=> 
+    async(req,res) =>
     {
         try 
         {
-            const user = await User.findById(req.id).select('-password')
-        
-            if(user)
-            {
-                const documentCount = await Document.find({ creator: req.id }).countDocuments()
-                return res.status(200).json({ user, documentCount })
-            }
-
-            else
-            {
-                return res.status(401).json({ msg: 'Unauthorized' })
-            }
+            const documentCount = await Document.find({ creator: req.id }).select('-content').countDocuments()
+            return res.status(200).json({ documentCount })
         } 
         
         catch (error) 
@@ -49,7 +39,6 @@ router.post
     [
         check('name', 'Name is required').notEmpty(),
         check('password', 'Password must be within 8 & 18 chars').isLength(8,18),
-        check('region', 'Please Select Region').notEmpty()
     ],
 
     async(req,res)=> 
@@ -63,12 +52,12 @@ router.post
 
         else
         {
-            let { name, password, region } = req.body
+            let { name, password } = req.body
             password = await bcrypt.hash(password, 12)
             
             try
             {
-                await User.findByIdAndUpdate(req.id, { name, password, region })
+                await User.findByIdAndUpdate(req.id, { name, password })
                 return res.status(200).json({ msg: 'Profile Updated' })
             }
             
@@ -77,53 +66,6 @@ router.post
                 return res.status(500).json({ msg: 'Server Error' })
             }
         }
-    }
-)
-
-//Reset Account Route
-router.post
-(
-    '/reset', 
-
-    auth, 
-
-    [
-        check('password', 'Password Must Not Be Empty').notEmpty()
-    ],
-
-    async(req,res)=> 
-    {
-        try
-        {
-            let { password } = req.body
-            const user = await User.findById(req.id)
-    
-            if(user)
-            {
-                const isPasswordMatching = await bcrypt.compare(password, user.password)
-                
-                if(isPasswordMatching)
-                {
-                    await Document.deleteMany({ creator: req.id })
-                    return res.status(200).json({ msg: 'Account Reset Success' })
-                }
-    
-                else
-                {
-                    return res.status(401).json({ msg: 'Invalid Password' })
-                }
-            }
-    
-            else
-            {
-                return res.status(401).json({ msg: 'Invalid Password' })
-            }
-        }
-
-        catch(error)
-        {
-            return res.status(401).json({ msg: 'Invalid Password' })
-        }  
     }
 )
 
