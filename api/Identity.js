@@ -50,13 +50,13 @@ router.post
                     const otp = otpgen.generate(6, { alphabets: false, specialChars: false, upperCase: false }) 
                     const hash = otptool.createNewOTP(email, otp, key=OTP_KEY, expiresAfter=3, algorithm='sha256')
                     sendmail(email,otp)
-                    return res.status(200).json({ hash, msg: 'Please check OTP in Email' })
+                    return res.status(200).json({ hash, msg: 'Please check OTP in email' })
                 }
             } 
             
             catch (error) 
             {
-                return res.status(500).json({ msg: 'Connection Error' })
+                return res.status(500).json({ msg: 'Connection error' })
             }
         }
     }
@@ -95,7 +95,7 @@ router.post
 
                 if(user)
                 {
-                    return res.status(400).json({ msg: 'Account With Same Email Address Exists' })
+                    return res.status(400).json({ msg: 'Account with same email id already exists' })
                 }
 
                 else
@@ -121,7 +121,7 @@ router.post
 
             catch (error) 
             {
-                return res.status(500).json({ msg: 'Connection Error' })
+                return res.status(500).json({ msg: 'Connection error' })
             }
         }
     }
@@ -156,7 +156,7 @@ router.post
 
                 if(!user)
                 {
-                    return res.status(401).json({ msg: 'Invalid Credentials' })
+                    return res.status(401).json({ msg: 'Invalid credentials' })
                 }
 
                 else
@@ -168,19 +168,19 @@ router.post
                         const otp = otpgen.generate(6, { alphabets: false, specialChars: false, upperCase: false }) 
                         const hash = otptool.createNewOTP(email, otp, key=OTP_KEY, expiresAfter=3, algorithm='sha256')
                         sendmail(email, otp)
-                        return res.status(200).json({ hash, msg: 'Please check OTP in Email' })
+                        return res.status(200).json({ hash, msg: 'Please check OTP in email' })
                     }
 
                     else
                     {
-                        return res.status(401).json({ msg: 'Invalid Credentials' })
+                        return res.status(401).json({ msg: 'Invalid credentials' })
                     }
                 }
             } 
 
             catch (error) 
             {
-                return res.status(500).json({ msg: 'Connection Error' })
+                return res.status(500).json({ msg: 'Connection error' })
             }
         }
     }
@@ -195,7 +195,7 @@ router.post
         check('email', 'Email is required').isEmail(),
         check('password', 'Password is required').notEmpty(),
         check('otp', 'OTP must be a 6 digit number').isLength(6),
-        check('hash', 'Invalid Hash').notEmpty()
+        check('hash', 'Invalid hash').notEmpty()
     ],
 
     async(req, res) =>
@@ -217,7 +217,7 @@ router.post
 
                 if(!user)
                 {
-                    return res.status(401).json({ msg: 'Invalid Credentials' })
+                    return res.status(401).json({ msg: 'Invalid credentials' })
                 }
 
                 else
@@ -242,14 +242,14 @@ router.post
 
                     else
                     {
-                        return res.status(401).json({ msg: 'Invalid Credentials' })
+                        return res.status(401).json({ msg: 'Invalid credentials' })
                     }
                 }
             } 
             
             catch (error) 
             {
-                return res.status(500).json({ msg: 'Connection Error' })
+                return res.status(500).json({ msg: 'Connection error' })
             }
         }
     }
@@ -291,13 +291,13 @@ router.post
                     const otp = otpgen.generate(6, { alphabets: false, specialChars: false, upperCase: false }) 
                     const hash = otptool.createNewOTP(email, otp, key=OTP_KEY, expiresAfter=3, algorithm='sha256')
                     sendmail(email,otp)
-                    return res.status(200).json({ hash, msg: 'Please check OTP in Email' })
+                    return res.status(200).json({ hash, msg: 'Please check OTP in email' })
                 }
             } 
 
             catch (error) 
             {
-                return res.status(500).json({ msg: 'Connection Error' })
+                return res.status(500).json({ msg: 'Connection error' })
             }
         }
     }
@@ -312,7 +312,7 @@ router.post
         check('email', 'Email is required').notEmpty(),
         check('password', 'Password must be within 8 & 18 chars').isLength(8,18),
         check('otp', 'OTP must be a 6 digit number').isLength(6),
-        check('hash', 'Invalid Hash').notEmpty()
+        check('hash', 'Invalid hash').notEmpty()
     ],
 
     async(req,res)=>
@@ -335,7 +335,7 @@ router.post
 
                 if(!user)
                 {
-                    return res.status(400).json({ msg: 'Account Does Not Exist' })
+                    return res.status(400).json({ msg: 'Account does not exist' })
                 }
 
                 else
@@ -361,7 +361,7 @@ router.post
 
             catch (error) 
             {
-                return res.status(500).json({ msg: 'Connection Error' })
+                return res.status(500).json({ msg: 'Connection error' })
             }
         }
     }

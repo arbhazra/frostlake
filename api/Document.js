@@ -44,18 +44,18 @@ router.post
                 {
                     let document = new Document({ creator: req.id, title, content, privacy })
                     await document.save()
-                    return res.status(200).json({ msg: 'Document Created' })  
+                    return res.status(200).json({ msg: 'Document created' })  
                 }
 
                 else
                 {
-                    return res.status(400).json({ msg: 'Document Storage Full' })   
+                    return res.status(400).json({ msg: 'Document storage full' })   
                 }
             } 
 
             catch (error) 
             {
-                return res.status(500).json({ msg: 'Error Creating Document' })
+                return res.status(500).json({ msg: 'Error creating document' })
             }
         }
     }
@@ -78,7 +78,7 @@ router.get
         
         catch (error) 
         {
-            return res.status(500).json({ msg: 'Server Error' })
+            return res.status(500).json({ msg: 'Server error' })
         }
         
     }
@@ -107,7 +107,7 @@ router.get
 
                 else
                 {
-                    return res.status(404).json({ msg: 'No Access' })
+                    return res.status(404).json({ msg: 'No access' })
                 }
             }
 
@@ -119,9 +119,8 @@ router.get
          
         catch (error) 
         {
-            return res.status(404).json({ msg: 'No Access' })
+            return res.status(404).json({ msg: 'No access' })
         }
-        
     }
 )
 
@@ -137,12 +136,12 @@ router.delete
         try 
         {
             await Document.findByIdAndDelete(req.params.id)
-            return res.status(200).json({ msg: 'Document Deleted' })
+            return res.status(200).json({ msg: 'Document deleted' })
         } 
 
         catch (error) 
         {
-            return res.status(500).json({ msg: 'Error Deleting Document' })
+            return res.status(500).json({ msg: 'Error deleting document' })
         }
     }
 )

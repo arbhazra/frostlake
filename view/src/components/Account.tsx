@@ -17,7 +17,7 @@ const UpdateAccount: React.FC = () =>
     let handleUpdate = async(e:any) =>
     {
         e.preventDefault()
-        setState({ ...state, alert: 'Updating Profile' })
+        setState({ ...state, alert: 'Updating profile' })
         
         try 
         {
@@ -150,7 +150,7 @@ const CloseAccount: React.FC = () =>
     let handleClose = async(e:any) =>
     {
         e.preventDefault()
-        setState({ ...state, alert: 'Closing Account' })
+        setState({ ...state, alert: 'Closing account' })
             
         try 
         {

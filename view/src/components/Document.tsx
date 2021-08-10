@@ -114,8 +114,8 @@ const DocumentLibrary: React.FC = () =>
     const history = useHistory()
 
     useEffect(() => 
-    {
-        let fetchLibrary = async() =>
+    {        
+        (async () =>
         {
             try 
             {
@@ -128,9 +128,7 @@ const DocumentLibrary: React.FC = () =>
             {
                 history.push('/identity/signin') 
             }
-        }       
-
-        fetchLibrary()   
+        })()
     }, [])
 
     const removeDocument = async(id: any) =>

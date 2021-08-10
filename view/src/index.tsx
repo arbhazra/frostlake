@@ -2,7 +2,7 @@
 import ReactDOM from 'react-dom'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import './sass/index.sass'
+import './App.sass'
 import App from './App'
 
 //React Render

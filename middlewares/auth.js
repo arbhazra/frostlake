@@ -31,13 +31,13 @@ module.exports = async function(req,res,next)
 
             else
             {
-                return res.status(401).json({ msg: 'Invalid User' })
+                return res.status(401).json({ msg: 'Invalid user' })
             }    
         }
 
         catch(error)
         {
-            return res.status(401).json({ msg: 'Invalid Token' })
+            return res.status(401).json({ msg: 'Invalid token' })
         }
     }
 }

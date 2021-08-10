@@ -5,17 +5,17 @@ import axios from 'axios'
 //Session Hook
 const useSession = () =>
 {
-    const [state, setState] = useState({ name: '', documentCount:0, isLoaded: false, hasError: false })
+    const [state, setState] = useState({ name: '', isLoaded: false, hasError: false })
 
     useEffect(() => 
     {
-        let authAPI = async() =>
+        (async () =>
         {
             try 
             {
                 axios.defaults.headers.common['x-auth-token'] = localStorage.getItem('token') 
                 const response = await axios.get('/services/session/getactiveuser')
-                setState({ name: response.data.user.name, documentCount: response.data.documentCount, isLoaded: true, hasError: false })
+                setState({ name: response.data.user.name, isLoaded: true, hasError: false })
             } 
             
             catch (error) 
@@ -23,9 +23,7 @@ const useSession = () =>
                 localStorage.removeItem('token')
                 setState({ ...state, isLoaded: true, hasError: true })
             }
-        }
-
-        authAPI()
+        })()
     }, [])
 
     return state

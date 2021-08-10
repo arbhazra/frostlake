@@ -24,7 +24,7 @@ router.get
         
         catch (error) 
         {
-            return res.status(500).json({ msg: 'Server Error' })
+            return res.status(500).json({ msg: 'Server error' })
         }
     }
 )
@@ -58,12 +58,12 @@ router.post
             try
             {
                 await User.findByIdAndUpdate(req.id, { name, password })
-                return res.status(200).json({ msg: 'Profile Updated' })
+                return res.status(200).json({ msg: 'Profile updated' })
             }
             
             catch(error)
             {
-                return res.status(500).json({ msg: 'Server Error' })
+                return res.status(500).json({ msg: 'Server error' })
             }
         }
     }
@@ -77,7 +77,7 @@ router.post
     auth, 
 
     [
-        check('password', 'Password Must Not Be Empty').notEmpty()
+        check('password', 'Password must not Be empty').notEmpty()
     ],
 
     async(req,res)=> 
@@ -96,24 +96,24 @@ router.post
                 {
                     await Document.deleteMany({ creator: req.id })
                     await User.findByIdAndDelete(req.id)
-                    return res.status(200).json({ msg: 'Account Close Success' })
+                    return res.status(200).json({ msg: 'Account close success' })
                 }
     
                 else
                 {
-                    return res.status(401).json({ msg: 'Invalid Password' })
+                    return res.status(401).json({ msg: 'Invalid password' })
                 }
             }
     
             else
             {
-                return res.status(401).json({ msg: 'Invalid Password' })
+                return res.status(401).json({ msg: 'Invalid password' })
             }    
         } 
         
         catch (error) 
         {
-            return res.status(401).json({ msg: 'Invalid Password' })
+            return res.status(500).json({ msg: 'Server error' })
         } 
     }
 )

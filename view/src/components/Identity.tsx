@@ -14,7 +14,7 @@ const SignUp : React.FC = () =>
     let getOTP = async(e: any) =>
     {
         e.preventDefault()
-        setState({ ...state, alert: 'Please Wait' })
+        setState({ ...state, alert: 'Please wait' })
 
         try 
         {  
@@ -32,7 +32,7 @@ const SignUp : React.FC = () =>
 
             else
             {
-                setState({ ...state, alert: 'Connection Error' })
+                setState({ ...state, alert: 'Connection error' })
             }
         }
     }
@@ -40,7 +40,7 @@ const SignUp : React.FC = () =>
     let register = async(e: any) =>
     {
         e.preventDefault()
-        setState({ ...state, alert: 'Creating Account' })
+        setState({ ...state, alert: 'Creating account' })
 
         try 
         {   
@@ -59,7 +59,7 @@ const SignUp : React.FC = () =>
 
             else
             {
-                setState({ ...state, alert: 'Connection Error' })
+                setState({ ...state, alert: 'Connection error' })
             }
         }
     }
@@ -104,7 +104,7 @@ const SignIn : React.FC = () =>
     let getOTP = async(e: any) =>
     {
         e.preventDefault()
-        setState({ ...state, alert: 'Please Wait' })
+        setState({ ...state, alert: 'Please wait' })
 
         try 
         {     
@@ -122,7 +122,7 @@ const SignIn : React.FC = () =>
 
             else
             {
-                setState({ ...state, alert: 'Connection Error' })
+                setState({ ...state, alert: 'Connection error' })
             }
         }
     }
@@ -131,7 +131,7 @@ const SignIn : React.FC = () =>
     let login = async(e: any) =>
     {
         e.preventDefault()
-        setState({ ...state, alert: 'Signing In' })
+        setState({ ...state, alert: 'Signing in' })
 
         try 
         {
@@ -150,7 +150,7 @@ const SignIn : React.FC = () =>
 
             else
             {
-                setState({ ...state, alert: 'Connection Error' })
+                setState({ ...state, alert: 'Connection error' })
             }
         }
     }
@@ -193,7 +193,7 @@ const PasswordReset : React.FC = () =>
     let getOTP = async(e: any) =>
     {
         e.preventDefault()    
-        setState({ ...state, alert: 'Please Wait' })
+        setState({ ...state, alert: 'Please wait' })
 
         try 
         { 
@@ -211,7 +211,7 @@ const PasswordReset : React.FC = () =>
 
             else
             {
-                setState({ ...state, alert: 'Connection Error' })
+                setState({ ...state, alert: 'Connection error' })
             }
         }
     }
@@ -219,7 +219,7 @@ const PasswordReset : React.FC = () =>
     let reset = async(e: any) =>
     {
         e.preventDefault()
-        setState({ ...state, alert: 'Resetting Password' })
+        setState({ ...state, alert: 'Resetting password' })
 
         try 
         {     
@@ -236,7 +236,7 @@ const PasswordReset : React.FC = () =>
             }
             else
             {
-                setState({ ...state, alert: 'Connection Error' })
+                setState({ ...state, alert: 'Connection error' })
             }
         }   
     }

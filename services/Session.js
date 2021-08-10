@@ -2,7 +2,6 @@
 const express = require('express')
 const auth = require('../middlewares/auth')
 const User = require('../models/User')
-const Document = require('../models/Document')
 const router = express.Router()
 
 //Session Service Route
@@ -20,8 +19,7 @@ router.get
         
             if(user)
             {
-                const documentCount = await Document.find({ creator: req.id }).select('-content').countDocuments()
-                return res.status(200).json({ user, documentCount })
+                return res.status(200).json({ user })
             }
 
             else
@@ -32,7 +30,7 @@ router.get
         
         catch (error) 
         {
-            return res.status(500).json({ msg: 'Server Error' })
+            return res.status(500).json({ msg: 'Server error' })
         }
     }
 )
