@@ -4,7 +4,7 @@ import axios from 'axios'
 import { Redirect, useHistory, Link } from 'react-router-dom'
 import { ProgressBar } from 'react-bootstrap'
 import { NavigationModule, LoadingModule } from './Modules'
-import useSession from '../hooks/UseSession'
+import useSession from '../hooks/useSession'
 
 //Update Account Component
 const UpdateAccount: React.FC = () =>
